@@ -287,12 +287,12 @@ class PoliticsApp(tk.Tk):
         # หน้า Dashboard หลัก
         if self.current_frame: self.current_frame.destroy()
         
-        # สร้าง Container หลักสำหรับ Dashboard (มีเมนูด้านบน)
+        # สร้าง Containerสำหรับ Dashboard 
         self.dashboard_container = DashboardView(self, self)
         self.dashboard_container.pack(fill="both", expand=True)
-        self.current_frame = self.dashboard_container # Track ไว้เพื่อ destroy ตอน logout
+        self.current_frame = self.dashboard_container # สำหรับ destroy ตอน logout
         
-        # เริ่มต้นแสดง List คำสัญญาใน Content Area ของ Dashboard
+        # เริ่มต้นแสดง List คำสัญญา
         self.show_promise_list()
 
     # Features Logic
