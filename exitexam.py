@@ -134,7 +134,7 @@ class DashboardView(tk.Frame):
         tk.Button(btn_frame, text="ดูคำสัญญาทั้งหมด", width=20, height=2, command=controller.show_promise_list).grid(row=0, column=0, padx=10)
         tk.Button(btn_frame, text="ดูรายชื่อนักการเมือง", width=20, height=2, command=controller.show_politician_list).grid(row=0, column=1, padx=10)
 
-        # Content Area (ที่จะเปลี่ยนไปมา)
+        # Content Area 
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
@@ -202,7 +202,7 @@ class PromiseDetailView(tk.Frame):
             tree.insert("", "end", values=(u['date'], u['detail']))
         tree.pack(fill="x")
 
-        # Action Button (Check Permission & Status)
+        # Action Button 
         if role == 'admin':
             if p['status'] == 'เงียบหาย':
                 tk.Label(self, text="* ไม่สามารถอัปเดตได้เนื่องจากสถานะคือ 'เงียบหาย'", fg="red").pack(pady=10)
@@ -247,7 +247,6 @@ class PoliticianListView(tk.Frame):
 
 
 # Controller
-
 class PoliticsApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -257,19 +256,18 @@ class PoliticsApp(tk.Tk):
         self.model = PoliticsModel()
         self.current_frame = None
         
-        # เริ่มต้นที่หน้า Login
+        # start Login
         self.show_login()
 
     def switch_frame(self, frame_class, **kwargs):
-        """Utility function สำหรับสลับหน้าจอ"""
         if self.current_frame:
             self.current_frame.destroy()
         
-        # สร้าง Frame ใหม่แล้วแสดงผล
+        # สร้าง frame ใหม่
         self.current_frame = frame_class(self, **kwargs)
         self.current_frame.pack(fill="both", expand=True)
 
-    # --- Login & Main Menu ---
+    # Login and Dashboard
     def show_login(self):
         self.switch_frame(LoginView, on_login_click=self.attempt_login)
 
@@ -297,7 +295,7 @@ class PoliticsApp(tk.Tk):
         # เริ่มต้นแสดง List คำสัญญาใน Content Area ของ Dashboard
         self.show_promise_list()
 
-    # --- Features Logic ---
+    # Features Logic
     
     def show_promise_list(self):
         # Clear content area
@@ -305,7 +303,6 @@ class PoliticsApp(tk.Tk):
             widget.destroy()
             
         promises = self.model.get_all_promises()
-        # ส่ง function on_select ไปให้ View เมื่อ user ดับเบิ้ลคลิก
         PromiseListView(self.dashboard_container.content_frame, promises, self.on_promise_select)
 
     def on_promise_select(self, tree):
@@ -354,7 +351,7 @@ class PoliticsApp(tk.Tk):
         else:
             messagebox.showerror("Error", msg)
 
-    # --- Politician Feature ---
+    # Politician Feature
     def show_politician_list(self):
         for widget in self.dashboard_container.content_frame.winfo_children():
             widget.destroy()
@@ -371,11 +368,10 @@ class PoliticsApp(tk.Tk):
     def show_politician_promises(self, pol_id):
         for widget in self.dashboard_container.content_frame.winfo_children():
             widget.destroy()
-        
-        # Reuse PromiseListView แต่ filter เฉพาะคนนี้
+
         promises = self.model.get_promises_by_pol_id(pol_id)
         
-        # เพิ่มปุ่มย้อนกลับเฉพาะหน้า
+        # add back button
         tk.Button(self.dashboard_container.content_frame, text="< กลับไปหน้ารายชื่อ", 
                   command=self.show_politician_list).pack(anchor="w", pady=5)
         
