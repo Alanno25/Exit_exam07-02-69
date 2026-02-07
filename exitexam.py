@@ -4,7 +4,7 @@ import json
 import datetime
 import os
 
-# Model Database
+# ----start Model Database----
 class PoliticsModel:
     def __init__(self, db_file="politics_gui_db.json"):
         self.db_file = db_file
@@ -97,9 +97,9 @@ class PoliticsModel:
     
     def get_promises_by_pol_id(self, pol_id):
         return [p for p in self.db['promises'] if p['pol_id'] == pol_id]
+# ----end Model Database----
 
-
-# View UI
+# ----start View UI----
 class LoginView(tk.Frame):
     def __init__(self, master, on_login_click):
         super().__init__(master)
@@ -244,9 +244,9 @@ class PoliticianListView(tk.Frame):
         tree.pack(fill="both", expand=True)
         
         tree.bind("<Double-1>", lambda event: on_select(tree))
+# ----end View UI----
 
-
-# Controller
+# ----start Controller----
 class PoliticsApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -379,9 +379,9 @@ class PoliticsApp(tk.Tk):
             tk.Label(self.dashboard_container.content_frame, text="ไม่พบคำสัญญาของคนนี้").pack()
         else:
             PromiseListView(self.dashboard_container.content_frame, promises, self.on_promise_select)
+# ----end Controller----
 
-
-# Main
+# ----Main----
 if __name__ == "__main__":
     app = PoliticsApp()
     app.mainloop()
